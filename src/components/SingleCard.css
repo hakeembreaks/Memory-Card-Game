@@ -9,11 +9,30 @@
   }
   
 /* front of card - the picture */
+/* THE CARD FRONT
+REMEMBER, THE front is the picture of the card itself, and we set the position to be absolute, relative to the 
+card pairing element and that means its gonna sit on top, of the back of the card taking out of normal
+document flow and if we leave it like with only the absolute, the picture will just be sitting
+on top of the cover therefore hiding the cover but by default we dont wanna show the picture only the back.
+so instead of setting the display to be none for the front, we instead hide it by rotating it about the 
+Y axis by 90 degrees. so the Y axis is the axis that goes up and down, and if you rotate a flat shape, 
+like the card around the Y axis by 90 degrees, it will essentially hide it so now we'd be able to see 
+the back of the card by default underneath it*/
+
+
 .card .front {
     transform: rotateY(90deg);
     transition: all ease-in 0.2s;
     position: absolute;
   }
+
+ /*  so now we style the front of the class when it has the flipped class. and all we did is rotate it back 
+ to zero degrees, so that now we can see the image again. its still sitting on top of the cover
+ because of its absolute position and now its hiding the cover under neath it
+ so now when the card has a flippped class, it'll show the flipped picture and the back cover is hidden
+ but when it doesnt have the flipped class, we dont see the front picture, and the back cover underneath
+ is seen again */
+
   .flipped .front {
     transform: rotateY(0deg);
     transition-delay: 0.2s;
