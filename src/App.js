@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import SingleCard from "./components/SingleCard";
 
+// This line here, we create an array of cards and assigne it to cardImages and
+// all cards are set to matched: false to indicate that they have not been matched yet.
+
 const cardImages = [
   { src: "/img/helmet-1.png", matched: false },
   { src: "/img/potion-1.png", matched: false },
@@ -10,6 +13,10 @@ const cardImages = [
   { src: "/img/shield-1.png", matched: false },
   { src: "/img/sword-1.png", matched: false },
 ];
+
+// This line here we Define a function called App that uses the useState hook to set up the
+// following state variables:
+// cards, turns, choiceOne, choiceTwo, and disabled
 
 function App() {
   const [cards, setCards] = useState([]); // this is the state we store our card in
@@ -41,19 +48,31 @@ function App() {
   // first summary of what we did is, we call the shuffle cards, it'll generate the shuffle cards,
   // and then it'll update our card states to be those shuffled cards (setCards(shuffledCards))
 
-  const shuffleCards = () => {
-    const shuffledCards = [...cardImages, ...cardImages]
-      .sort(() => Math.random() - 0.5)
-      .map((card) => ({ ...card, id: Math.random() }));
+  // ******************************//
 
-    setChoiceOne(null);
+  //shuffle cards
+  // Creating a function called shuffleCards, which shuffles the cardImages array
+  // and sets the state variables to their initial values.
+
+  const shuffleCards = () => {
+    const shuffledCards = [...cardImages, ...cardImages] // we concatenate the card images with itself using the spread operator (...). The resulting array will contain two copies of each card in the original cardImages array. This doubling of the cardImages array is done to ensure that there are two cards with the same image on the game board, which is a requirement for the memory matching game. By doubling the array in this way, the game can ensure that there is a matching card for every card on the board.
+      .sort(() => Math.random() - 0.5) // //  this line of code ensures that the cards are shuffled in a random order
+      .map((card) => ({ ...card, id: Math.random() })); // creates new unique ids for each card. So, the map() method creates a new object for each card in the cardImages array
+
+    setChoiceOne(null); // // reset the values of choiceOne and choiceTwo to null after the previous round is finished, so that the user can start a new round with two new choices.
     setChoiceTwo(null);
-    setCards(shuffledCards); // we update the card state here using setCards and we pass in shuffledCards
-    setTurns(0);
+    setCards(shuffledCards); // we update the card state here using setCards and we pass in shuffledCards //  // sets the cards state to the new shuffled cards.
+    setTurns(0); // resets the number of turns to zero for the start of a new round.
   };
 
   //handle choice
   // The first const line, we take in an argument as the card the user has chosen
+  // ***************************/
+  //handle choice
+  // the handleChoice function in this code is responsible for handling a player's choice of cards by
+  // setting choiceOne and choiceTwo state variables. When a card is clicked,
+  // the handleChoice function is called with the selected card as its argument.
+
   const handleChoice = (card) => {
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card); // choice one true, left will run and vice versa
   };
@@ -74,7 +93,7 @@ function App() {
 
   useEffect(() => {
     if (choiceOne && choiceTwo) {
-      setDisabled(true);
+      setDisabled(true); // This is used to disable clicking on cards until the turn is complete.
       if (choiceOne.src === choiceTwo.src) {
         setCards((prevCards) => {
           return prevCards.map((card) => {
@@ -113,6 +132,9 @@ function App() {
   useEffect(() => {
     shuffleCards();
   }, []);
+
+  //  When  the New Game button is clicked, it triggers the "shuffleCards" function to shuffle the cards.
+  //
 
   return (
     <div className="App">
